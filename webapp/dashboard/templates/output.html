@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="grid" style="gap: 22px;">
+    <section class="card panel">
+        <div style="display: flex; align-items: start; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+            <div>
+                <p class="muted" style="margin: 0 0 8px;">Scan result</p>
+                <h1 style="margin: 0; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1.1;">
+                    Vulnerability Analysis Report
+                </h1>
+                <p class="muted" style="margin: 14px 0 0; word-break: break-word;">
+                    Target: <strong style="color: var(--text);">{{ url }}</strong>
+                </p>
+            </div>
+
+            <a href="{% url 'home' %}" class="btn btn-ghost">New Scan</a>
+        </div>
+    </section>
+
+    {% if error %}
+    <section class="alert">
+        {{ error }}
+    </section>
+    {% else %}
+
+    {% if summary_cards %}
+    <section class="summary-grid">
+        {% for item in summary_cards %}
+        <div class="summary-item card" style="background: rgba(255,255,255,0.03);">
+            <div class="label">{{ item.label }}</div>
+            <div class="value">{{ item.value }}</div>
+        </div>
+        {% endfor %}
+    </section>
+    {% endif %}
+
+    <section class="card panel">
+        <h2 class="section-title">Scan Output</h2>
+
+        {% if data %}
+            <pre class="codebox">{{ raw_json }}</pre>
+        {% else %}
+            <div class="muted">No scan data available.</div>
+        {% endif %}
+    </section>
+
+    {% endif %}
+</div>
+{% endblock %}
